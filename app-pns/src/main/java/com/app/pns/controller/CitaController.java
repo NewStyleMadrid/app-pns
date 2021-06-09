@@ -78,9 +78,8 @@ public class CitaController {
 		return new ResponseEntity(new Mensaje("Cita guardada!"), HttpStatus.CREATED);
 
 	}
-	
+
 	// Falta meter bien los datos //
-	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@PutMapping("/actualizar/{id}")
 	public ResponseEntity<?> update(@RequestBody Cita cita, @PathVariable("id") int id) {
@@ -88,28 +87,27 @@ public class CitaController {
 			return new ResponseEntity(new Mensaje("No existe la cita!"), HttpStatus.NOT_FOUND);
 		if (StringUtils.isBlank(cita.getTipoServicio()))
 			return new ResponseEntity(new Mensaje("Servicio obligatorio!"), HttpStatus.BAD_REQUEST);
-		if (cita.getHora()==null)
+		if (cita.getHora() == null)
 			return new ResponseEntity(new Mensaje("Hora obligatoria!"), HttpStatus.BAD_REQUEST);
-		if (cita.getFecha()==null)
+		if (cita.getFecha() == null)
 			return new ResponseEntity(new Mensaje("Fecha obligatoria!"), HttpStatus.BAD_REQUEST);
-		if (citaService.existePorId(cita.getId())
-				&& citaService.obtenerPorId(cita.getId()).get().getId() != id)
+		if (citaService.existePorId(cita.getId()) && citaService.obtenerPorId(cita.getId()).get().getId() != id)
 			return new ResponseEntity(new Mensaje("Cita existente!"), HttpStatus.BAD_REQUEST);
 		Cita citaUpdate = citaService.obtenerPorId(id).get();
-		citaUpdate.setTipoServicio(citaUpdate.getTipoServicio());
+		citaUpdate.setTipoServicio(cita.getTipoServicio());
+		citaUpdate.setFecha(cita.getFecha());
+		citaUpdate.setHora(cita.getHora());
 		citaService.guardar(citaUpdate);
 		return new ResponseEntity(new Mensaje("Cita actualizado!"), HttpStatus.CREATED);
 	}
 
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@DeleteMapping("/borrar/{id}")
-	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> delete(@PathVariable int id) {
 		if (!citaService.existePorId(id))
-			return new ResponseEntity(new Mensaje("No existe el producto!"), HttpStatus.NOT_FOUND);
+			return new ResponseEntity(new Mensaje("No existe la cita!"), HttpStatus.NOT_FOUND);
 		citaService.borrar(id);
-		return new ResponseEntity(new Mensaje("Producto eliminado de la BBDD."), HttpStatus.OK);
+		return new ResponseEntity(new Mensaje("Cita eliminada de la BBDD."), HttpStatus.OK);
 	}
 
 }

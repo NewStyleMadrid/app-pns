@@ -44,8 +44,4 @@ public class CitaService {
 	public boolean existePorHora(Integer hora) {
 		return citaRepository.existsByHora(hora);
 	}
-	
-	public Optional<Cita> obtenerPorUserId(String userId) {
-		return citaRepository.findByUsuarioId(userId);
-	}
 }
