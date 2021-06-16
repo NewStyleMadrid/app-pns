@@ -125,9 +125,15 @@ public class AuthController {
 			return new ResponseEntity(new Mensaje("Contraseña obligatoria!"), HttpStatus.BAD_REQUEST);
 		if (StringUtils.isBlank(usuario.getEmail()))
 			return new ResponseEntity(new Mensaje("Correo obligatorio!"), HttpStatus.BAD_REQUEST);
+		/*
+		if (usuarioService.existePorEmail(usuario.getEmail())
+				&& usuarioService.getByUserName(usuario.getEmail()).get().getId() != id)
+			return new ResponseEntity(new Mensaje("Correo existente!"), HttpStatus.BAD_REQUEST);
+		*/
 		if (usuarioService.existePorNombre(usuario.getUserName())
 				&& usuarioService.getByUserName(usuario.getUserName()).get().getId() != id)
 			return new ResponseEntity(new Mensaje("Usuario existente!"), HttpStatus.BAD_REQUEST);
+		
 		Usuario uUpdate = usuarioService.obtenerPorId(id).get();
 		 uUpdate.setNombre(usuario.getNombre());
 		 uUpdate.setApellidos(usuario.getApellidos());

@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +44,6 @@ public class CitaController {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@GetMapping("/detalle/{id}")
-	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<Cita> getOne(@PathVariable int id) {
 		if (!citaService.existePorId(id))
 			return new ResponseEntity(new Mensaje("No existe la cita!"), HttpStatus.NOT_FOUND);
@@ -55,7 +53,6 @@ public class CitaController {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@PostMapping("/nueva")
-	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> create(@RequestBody Cita cita) {
 		if (StringUtils.isBlank(cita.getTipoServicio()))
 			return new ResponseEntity(new Mensaje("Servicio obligatorio!"), HttpStatus.BAD_REQUEST);
